@@ -88,7 +88,7 @@ class InferNode(Node):
 
         self.transform_stamped = TransformStamped()
         self.det3d_array = Detection3DArray()
-        self.det3d_array.header.frame_id = 'world'
+        self.det3d_array.header.frame_id = 'camera_link'
 
         if 'sunrgbd' in checkpoint_file_path:
             self.class_names = ('bed', 'table', 'sofa', 'chair', 'toilet', 'desk', 'dresser',
@@ -134,7 +134,7 @@ class InferNode(Node):
         # base points 是 odom 坐标系下的
         #base_points = np.zeros((len(int_data), 3))
         try:
-            transform_stamped = self.tf_buffer.lookup_transform('world', self.point_cloud_frame, msg.header.stamp)
+            transform_stamped = self.tf_buffer.lookup_transform('camera_link', self.point_cloud_frame, msg.header.stamp)
         except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
             self.get_logger().error(f"Failed to lookup transform: {e}")
             return
@@ -215,7 +215,7 @@ class InferNode(Node):
     
     def draw_bbox(self, bboxes, labels, scores, timestamp=None):
         det3d_array = Detection3DArray()
-        det3d_array.header.frame_id = 'world'
+        det3d_array.header.frame_id = 'camera_link'
         if len(bboxes) > 0:
             for ind in range(len(bboxes)):
                 bbox = bboxes[ind]
@@ -224,7 +224,7 @@ class InferNode(Node):
                     continue
                 score = scores[ind]
                 det3d = Detection3D()
-                det3d.header.frame_id = 'world'
+                det3d.header.frame_id = 'camera_link'
 
                 pose = Pose()
                 pose.position.x = bbox[0].item()

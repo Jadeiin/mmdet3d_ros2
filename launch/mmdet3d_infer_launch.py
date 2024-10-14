@@ -14,8 +14,8 @@ def generate_launch_description():
                 {'infer_device': 'cuda:0'},
                 {'nms_interval': 0.5},
                 {'point_cloud_qos': 'best_effort'},
-                {'point_cloud_frame': 'camera'},
-                {'point_cloud_topic': '/camera_point'}
+                {'point_cloud_frame': 'camera_depth_optical_frame'},
+                {'point_cloud_topic': '/camera/depth/color/points'}
             ]
         )
     ])
